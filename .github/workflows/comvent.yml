@@ -9,6 +9,6 @@ jobs:
         run: |
           echo This is a test
           set
-      - uses: ./comvent@master
+      - uses: .@master
         with:
-          keyword: def
+          keyword: ghi
