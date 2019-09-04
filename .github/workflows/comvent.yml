@@ -13,3 +13,5 @@ jobs:
       - uses: rytswd/comvent@v0.1-release
         with:
           keyword: jkl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
