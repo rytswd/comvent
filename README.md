@@ -1,6 +1,10 @@
-# Comvent - Simple Step for Comment Event with GitHub Actions
+# Comvent for GitHub Actions
 
-## Example
+## **WHAT**: Search in Comment Event
+
+Only a few dozens of lines of TypeScript to help streamline the GitHub Actions based on Issue and PR comments.
+
+## **HOW**: Examples
 
 You can find the actual `comvent` usage in this repo's [`.github/workflows/comvent.yml`](.github/workflows/comvent.yml)
 
@@ -20,9 +24,9 @@ jobs:
       - name: Some random step
         run: |
           echo This step simply runs, as there is no condition check
-        ...
+        # ...
         # You can have as many steps as you need - without "if:" clause, these will run unconditionally
-        ...
+        # ...
 
       - name: Run when comvent matches
         run: |
@@ -34,15 +38,13 @@ jobs:
         #   if not   -> ""
 ```
 
-## WHAT: Comment Evenet Search
+You can find more examples in this repo's [`.github/workflows/`](.github/workflows/).
 
-To Be Updated
-
-## WHY: Quick and Cheap
+## **WHY**: Quick and Cheap
 
 GitHub Actions can be defined either in JavaScript or Docker container.
 
-Because Docker container takes some time to start up, you will pay for ~10sec for every single run.  
-When you use GitHub Actions on frequently used events such as PR and Issue Comments, this can easily add up.
+Docker container allows full segregation and secure setup, but it takes about ~10sec to build and start up.  
+When you wish to use GitHub Actions on frequently used events such as PR and Issue Comments, this can easily add up.
 
 The solution `comvent` provides is a cheaper solution than Docker equivalent (written in only dozens of lines in TypeScript), and provides a building block for much more complex setup.
