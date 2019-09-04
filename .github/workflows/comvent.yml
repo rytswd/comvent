@@ -9,6 +9,6 @@ jobs:
         run: |
           echo This is a test
           set
-      - uses: .@master
+      - uses: rytswd/comvent@master
         with:
           keyword: ghi
