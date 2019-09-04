@@ -1,10 +1,10 @@
-name: 'Comvent - Comment Event'
-description: 'Fast comment parsing'
-author: 'Ryota'
+name: "Comvent - Comment Event"
+description: "Fast comment parsing"
+author: "Ryota"
 inputs:
   keyword:
-    description: 'Keyword to search in the comment'
-    default: 'abc' # TBD
+    description: "Keyword to search in the comment"
+    default: "abc" # TBD
 runs:
-  using: 'node12'
-  main: 'lib/main.js'
+  using: "node12"
+  main: "src/main.ts"
