@@ -5,9 +5,10 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - uses: rytswd/comvent@master
+      - name: lalala
         run: |
           echo This is a test
           set
+      - uses: rytswd/comvent@master
         with:
           keyword: def
