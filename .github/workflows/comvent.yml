@@ -11,7 +11,15 @@ jobs:
           echo This is a test
           set
       - uses: rytswd/comvent@v0.1-release
+        id: comvent
         with:
           keyword: jkl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Some random method
+        run: |
+          echo Just says something
+      - name: Run when comvent matches
+        run: |
+          echo This message means comvent found the comment event with the matching keyword
+        if: steps.comvent.found == 'passed'
