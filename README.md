@@ -12,10 +12,10 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - uses: rytswd/comvent@v0.1-release       # This line would pull down the release version of comvent
-        id: comvent                             # Add an ID, so that you can control your step later
+      - uses: rytswd/comvent@v0.1-release   # This line would pull down the release version of comvent
+        id: comvent                         # Add an ID, so that you can control your step later
         with:
-          keyword: Trigger                      # This is the regex string to search in the comment
+          keyword: Trigger                  # This is the regex string to search in the comment
       - name: Some random method
         ...
         # You can have as many steps as you need - without "if:" clause, these will run unconditionally
@@ -23,8 +23,8 @@ jobs:
       - name: Run when comvent matches
         run: |
           echo You see this step run only when comvent found the matching keyword in the comment event
-        if: steps.comvent.comvent != ''         # This checks whether comvent found a match
-                                                # Comvent returns the following values
-                                                #   if found -> "found"
-                                                #   if not   -> ""
+        if: steps.comvent.comvent != ''     # This checks whether comvent found a match
+                                            # Comvent returns the following values
+                                            #   if found -> "found"
+                                            #   if not   -> ""
 ```

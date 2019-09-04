@@ -15,4 +15,4 @@ jobs:
       - name: Run when comvent matches
         run: |
           echo You see this step run only when comvent found the matching keyword in the comment event
-        if: steps.comvent.comvent != ''
+        if: steps.comvent.outputs.comvent != ''
