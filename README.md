@@ -23,8 +23,9 @@ jobs:
       - name: Run when comvent matches
         run: |
           echo You see this step run only when comvent found the matching keyword in the comment event
-        if: steps.comvent.comvent != ''     # This checks whether comvent found a match
-                                            # Comvent returns the following values
-                                            #   if found -> "found"
-                                            #   if not   -> ""
+        # This checks whether comvent found a match
+        if: steps.comvent.outputs.comvent != ''
+        # Comvent returns the following values
+        #   if found -> "found"
+        #   if not   -> ""
 ```
