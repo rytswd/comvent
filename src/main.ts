@@ -9,4 +9,8 @@ async function run() {
   }
 }
 
+async function parse() {
+  core.debug(`env: ${process.env}`);
+}
+
 run();
