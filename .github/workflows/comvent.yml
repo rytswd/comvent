@@ -9,6 +9,6 @@ jobs:
         run: |
           echo This is a test
           set
-      - uses: rytswd/comvent@v0.0.1
+      - uses: ./comvent@master
         with:
           keyword: def
