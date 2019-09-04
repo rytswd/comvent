@@ -1,0 +1,14 @@
+name: Comvent - Slim exmaple
+on: issue_comment
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rytswd/comvent@v0.1-release
+        id: comvent
+        with:
+          keyword: slim # This is the regex string to match against
+      - name: Run when comvent matches
+        run: echo You see this step run only when comvent found the matching keyword in the comment event
+        if: steps.comvent.outputs.comvent != ''

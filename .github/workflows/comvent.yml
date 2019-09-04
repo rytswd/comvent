@@ -9,7 +9,7 @@ jobs:
         id: comvent
         with:
           keyword: Trigger # This is the regex string to match against
-      - name: Some random method
+      - name: Some random step
         run: |
           echo This step simply runs, as there is no condition check
       - name: Run when comvent matches
