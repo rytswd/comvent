@@ -1,4 +1,4 @@
-name: Comvent Parse
+name: Comvent - Run if comment matches the keyword
 on: issue_comment
 
 jobs:
@@ -8,13 +8,11 @@ jobs:
       - uses: rytswd/comvent@v0.1-release
         id: comvent
         with:
-          keyword: Trigger
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          keyword: Trigger # This is the regex string to match against
       - name: Some random method
         run: |
-          echo Just says something
+          echo This step simply runs, as there is no condition check
       - name: Run when comvent matches
         run: |
-          echo This message means comvent found the comment event with the matching keyword
-        if: steps.comvent.found == 'passed'
+          echo You see this step run only when comvent found the matching keyword in the comment event
+        if: steps.comvent.found != ''
