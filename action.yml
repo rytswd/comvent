@@ -1,10 +1,9 @@
 name: "Comvent - Comment Event"
-description: "Fast comment parsing"
-author: "Ryota"
+description: "Fast parsing of comment event"
+author: "rytswd"
 inputs:
   keyword:
-    description: "Keyword to search in the comment"
-    default: "abc" # TBD
+    description: "Keyword to search in the comment; this uses a regex"
 runs:
   using: "node12"
   main: "lib/main.js"
