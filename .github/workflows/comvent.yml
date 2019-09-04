@@ -11,4 +11,4 @@ jobs:
           set
       - uses: rytswd/comvent@master
         with:
-          keyword: ghi
+          keyword: jkl
