@@ -1,4 +1,4 @@
-name: "Comvent Parso"
+name: Comvent Parse
 on: issue_comment
 
 jobs:
