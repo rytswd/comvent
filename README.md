@@ -16,16 +16,33 @@ jobs:
         id: comvent                         # Add an ID, so that you can control your step later
         with:
           keyword: Trigger                  # This is the regex string to search in the comment
-      - name: Some random method
+
+      - name: Some random step
+        run: |
+          echo This step simply runs, as there is no condition check
         ...
         # You can have as many steps as you need - without "if:" clause, these will run unconditionally
         ...
+
       - name: Run when comvent matches
         run: |
-          echo You see this step run only when comvent found the matching keyword in the comment event
+          echo You see this step running only when comvent found the matching keyword in the comment event
         # This checks whether comvent found a match
         if: steps.comvent.outputs.comvent != ''
         # Comvent returns the following values
         #   if found -> "found"
         #   if not   -> ""
 ```
+
+## WHAT: Comment Evenet Search
+
+To Be Updated
+
+## WHY: Quick and Cheap
+
+GitHub Actions can be defined either in JavaScript or Docker container.
+
+Because Docker container takes some time to start up, you will pay for ~10sec for every single run.  
+When you use GitHub Actions on frequently used events such as PR and Issue Comments, this can easily add up.
+
+The solution `comvent` provides is a cheaper solution than Docker equivalent (written in only dozens of lines in TypeScript), and provides a building block for much more complex setup.
