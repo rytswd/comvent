@@ -5,11 +5,6 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - name: lalala
-        run: |
-          cat /github/workflow/event.json
-          echo This is a test
-          set
       - uses: rytswd/comvent@v0.1-release
         id: comvent
         with:
