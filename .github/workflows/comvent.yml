@@ -8,7 +8,7 @@ jobs:
       - uses: rytswd/comvent@v0.1-release
         id: comvent
         with:
-          keyword: jkl
+          keyword: Trigger
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Some random method
