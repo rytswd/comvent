@@ -1,9 +1,30 @@
-# JavaScript Action Template
+# Comvent - Simple Step for Comment Event with GitHub Actions
 
-This template offers an easy way to get started writing a JavaScript action with TypeScript compile time support, unit testing with Jest and using the GitHub Actions Toolkit.
+## Example
 
-## Getting Started
+You can find the actual `comvent` usage in this repo's [`.github/workflows/comvent.yml`](.github/workflows/comvent.yml)
 
-See the walkthrough located [here](https://github.com/actions/toolkit/blob/master/docs/javascript-action.md).
+```yaml
+name: Comvent - Run if comment matches the keyword
+on: issue_comment
 
-In addition to walking your through how to create an action, it also provides strategies for versioning, releasing and referencing your actions.
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rytswd/comvent@v0.1-release       # This line would pull down the release version of comvent
+        id: comvent                             # Add an ID, so that you can control your step later
+        with:
+          keyword: Trigger                      # This is the regex string to search in the comment
+      - name: Some random method
+        ...
+        # You can have as many steps as you need - without "if:" clause, these will run unconditionally
+        ...
+      - name: Run when comvent matches
+        run: |
+          echo You see this step run only when comvent found the matching keyword in the comment event
+        if: steps.comvent.comvent != ''         # This checks whether comvent found a match
+                                                # Comvent returns the following values
+                                                #   if found -> "found"
+                                                #   if not   -> ""
+```
