@@ -1,0 +1,13 @@
+name: "Comvent Parso"
+on: issue_comment
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rytswd/comvent@master
+        run: |
+          echo This is a test
+          set
+        with:
+          keyword: def
