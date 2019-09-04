@@ -9,6 +9,6 @@ jobs:
         run: |
           echo This is a test
           set
-      - uses: rytswd/comvent@master
+      - uses: rytswd/comvent@v0.1-release
         with:
           keyword: jkl
