@@ -7,4 +7,4 @@ inputs:
     default: "abc" # TBD
 runs:
   using: "node12"
-  main: "src/main.ts"
+  main: "lib/main.js"
