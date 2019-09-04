@@ -11,6 +11,8 @@ async function run() {
 
 async function parse() {
   core.debug(`env: ${process.env}`);
+  core.debug(`_: ${process.env._}`);
+  core.debug(`comment: ${process.env.comment}`);
 }
 
 run();
