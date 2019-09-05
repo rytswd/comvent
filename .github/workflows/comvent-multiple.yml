@@ -5,12 +5,12 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - uses: rytswd/comvent@v0.1
+      - uses: rytswd/comvent@v0.1.0
         id: comvent-0000
         with:
           keyword: 0000
 
-      - uses: rytswd/comvent@v0.1
+      - uses: rytswd/comvent@v0.1.0
         id: comvent-1111
         with:
           keyword: 1111
@@ -23,7 +23,7 @@ jobs:
         run: echo This step runs when the second keyword "1111" matches the comment
         if: steps.comvent-def.outputs.comvent != ''
 
-      - uses: rytswd/comvent@v0.1
+      - uses: rytswd/comvent@v0.1.0
         id: comvent-follow-up
         with:
           keyword: "^Test" # Regex search, case sensitive
