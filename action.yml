@@ -1,6 +1,9 @@
 name: "Comvent - Comment Event"
-description: "Fast parsing of comment event"
+description: "Comvent allows simple search on comment event, and control the job workflow"
 author: "rytswd"
+branding:
+  icon: zap
+  color: green
 inputs:
   keyword:
     description: "Keyword to search in the comment; this uses a regex"
