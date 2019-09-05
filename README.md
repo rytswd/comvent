@@ -16,10 +16,10 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - uses: rytswd/comvent@v0.1-release   # This line would pull down the release version of comvent
-        id: comvent                         # Add an ID, so that you can control your step later
+      - uses: rytswd/comvent@v0.1.0     # This line would pull down the release version of comvent
+        id: comvent                     # Add an ID, so that you can control your step later
         with:
-          keyword: Trigger                  # This is the regex string to search in the comment
+          keyword: Trigger              # This is the regex string to search in the comment
 
       - name: Some random step
         run: |
