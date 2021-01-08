@@ -19,7 +19,7 @@ jobs:
         id: comvent
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          config-path: .github/comvent-abusive-content-demo.yaml
+          config-path: .github/comvent-abusive-content-demo.yamlx
 
       # The below only runs when comvent finds matching comment.
       # This assumes that comvent config holding 'some-abusive-content' as a keyword.
