@@ -16,7 +16,7 @@
 
 - [Examples](#-examples)
 - [Action inputs](#-action-inputs)
-- [Comvent Configuration File](#-comvent-configuration-file)
+- [Comvent Configuration File](#%EF%B8%8F-comvent-configuration-file)
 
 ## 🚀 Examples
 
