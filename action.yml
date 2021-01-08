@@ -1,6 +1,9 @@
 name: Comvent - Comment Event
 description: Comment Event ⚡️ handler, which can be used as a building block of ChatBot like setup.
 author: rytswd
+branding:
+  icon: zap
+  color: green
 inputs:
   token:
     required: true
