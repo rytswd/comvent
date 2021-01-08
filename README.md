@@ -20,6 +20,8 @@
 
 ## 🚀 Examples
 
+Comvent is being used in this repo as well. You can check out [this issue](https://github.com/rytswd/comvent/issues/24) and comment to see the actual Comvent offerings in action! 🏃
+
 ### ChatBot Setup
 
 It is pretty easy to provide ChatBot experience in PR / Issue comment.
