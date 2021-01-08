@@ -1,0 +1,28 @@
+---
+# version determines the supported values and how they are handled. The current
+# latest is 0.2.0, and if not speccified, it infers the latest version.
+version: 0.2.0
+
+# trigger can accept either `default` or `specific`.
+# - default:  all comments will be handled by comvent, except for those from
+#             users listed under users.inactive list below.
+# - specific: only comments made by specified users under users.active list
+#             below gets handled by comvent.
+trigger: default
+
+# users is consisted of `active` or `inactive` user list. Providing a list
+# which does not match the `trigger` setup above is simply ignored.
+users:
+  active:
+    - rytswd # This is no-op, as the `trigger` above is set to `default`
+  inactive:
+    - random-user
+    - another-user
+
+# keywords is a list comprised of `name` and `value` fields.
+# - name:  used for comvent output, and thus should not include whitespace.
+# - value: regex value to search for. The search takes place for each line in
+#          the comment.
+keywords:
+  - name: command-random
+    value: '^\/random$' # Regex which looks for a comment with '/random'

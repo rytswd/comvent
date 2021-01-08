@@ -1,0 +1,16 @@
+---
+version: 0.2.0
+
+trigger: specific # denotes that comvent checks for comments by below "active" users
+
+users:
+  active:
+    - rytswd # This works as a whitelist, meaning this user's comment will be a part of comvent.
+
+keywords:
+  - name: command-random
+    value: '^\/random$' # Regex which looks for a comment with '/random'
+  - name: command-today
+    value: '^\/today$' # Regex which looks for a comment with '/today'
+  - name: command-httpbin
+    value: '^\/httpbin$' # Regex which looks for a comment with '/httpbin'
