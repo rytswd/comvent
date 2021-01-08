@@ -1,87 +1,297 @@
-# Comvent for GitHub Actions
+# ⚡️ Comvent
 
-## **WHAT**: Search in Comment Event
+> Simple control for GitHub Actions to handle "comment event" - a building block for rich comment handling
 
-Only a few dozens of lines of TypeScript to help streamline the GitHub Actions based on Issue and PR comments.
+[![Build Status](https://github.com/rytswd/comvent/workflows/build-test/badge.svg)](build-status) | [![License: MIT](https://img.shields.io/badge/License-MIT-powderblue.svg)](mit) | [![GitHub Release Date](https://img.shields.io/github/release-date/rytswd/comvent?color=powderblue)](releases)
 
-## **HOW**: Example with `comvent`
+![Example in action](./doc/asset/example01.png)
 
-You can find the actual `comvent` usage in this repo's [`.github/workflows/comvent.yml`](.github/workflows/comvent.yml)
+<!--Placeholder-->
+
+[build-status]: https://github.com/rytswd/comvent/actions
+[mit]: https://opensource.org/licenses/MIT
+[releases]: https://github.com/rytswd/comvent/releases
+
+## 🌅 Contents
+
+- [Examples](#-examples)
+- [Action inputs](#-action-inputs)
+- [Comvent Configuration File](#-comvent-configuration-file)
+
+## 🚀 Examples
+
+### ChatBot Setup
+
+It is pretty easy to provide ChatBot experience in PR / Issue comment.
+
+You can add Comvent setup at the beginning of the `issue_comment` event, and use its output to run any step afterwards based on the patterns found. The below is an example to simply repsond to a comment.
+
+> `.github/workflows/chatbot.yaml`
 
 ```yaml
-name: Comvent - Run if comment matches the keyword
-on: issue_comment
+- name: Handle with Comvent
+  id: comvent
+  with:
+    token: ${{ secrets.GITHUB_TOKEN }}
+    config-path: .github/comvent-chatbot.yaml
+
+# The below only runs when Comvent finds matching comment.
+# This assumes that Comvent config holding 'command-random' as a keyword.
+- if: steps.comvent.outputs.command-random != ''
+  name: Handle random event
+  uses: actions/github-script@v3
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    # An example of responding to a comment.
+    script: |
+      const comment = `Command \`/random\` was triggered by the comment`;
+
+      github.issues.createComment({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: comment
+      })
+
+#
+# You can repeat similar handling based on the Comvent config.
+#
+```
+
+<details>
+<summary>Click to view full example</summary>
+
+> `.github/workflows/chatbot.yaml`
+
+```yaml
+name: ChatBot
+on:
+  issue_comment:
+    # This shouldn't be called for comment deletion
+    types:
+      - created
+      - edited
 
 jobs:
-  comment:
+  chatbot:
+    name: With latest code base
     runs-on: ubuntu-latest
+
     steps:
-      - uses: rytswd/comvent@v0.1.0 # This line would pull down the release version of comvent
-        id: comvent # Add an ID, so that you can control your step later
+      - name: Handle with Comvent
+        id: comvent
         with:
-          keyword: Trigger # This is the regex string to search in the comment
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-path: .github/comvent-chatbot.yaml
 
-      - name: Some random step
-        run: |
-          echo This step simply runs, as there is no condition check
+      # The below only runs when Comvent finds matching comment.
+      # This assumes that Comvent config holding 'command-random' as a keyword.
+      - if: steps.comvent.outputs.command-random != ''
+        name: Handle random event
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # An example of responding to a comment.
+          script: |
+            const comment = `Command \`/random\` was triggered by the comment`;
 
-        # ...
-        # You can have as many steps as you need - without "if:" clause, these will run unconditionally
-        # ...
-      - name: Run when comvent matches
-        run: |
-          echo You see this step running only when comvent found the matching keyword in the comment event
-        # This checks whether comvent found a match
-        if: steps.comvent.outputs.comvent != ''
-        # Comvent returns the following values
-        #   if found -> "found"
-        #   if not   -> ""
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            })
+
+      #
+      # You can repeat similar handling based on the Comvent config.
+      #
 ```
 
-You can find more examples in this repo's [`.github/workflows/`](.github/workflows/).
+</details>
 
-## **HOW**: Exmaple without `comvent`, Only Shell
+As used above, Comvent configuration needs to define the keywords to find patterns.
+
+> `.github/comvent-chatbot.yaml`
 
 ```yaml
-name: Shell - achieve comvent equivalent
-on: issue_comment
+---
+version: 0.2.0
 
-jobs:
-  comment:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check Comment
-      - run: |
-        # Get hold of `jq' command
-        ...
+trigger: default
 
-        # Query in comment with egrep, etc.
-        # You will need to add condition handling of when and when not found
-        cat $GITHUB_EVENT_PATH | jq .event.comment.body | egrep 'Trigger'
-        ...
+keywords:
+  - name: command-random
+    value: '^\/random$' # Regex which looks for a comment with '/random'
+  - name: some-other-command
+    value: 'some arbitrary regex setup'
 
-        # Special syntax used in GitHub Actions to set output
-        echo '##[set-output name=comvent;]found'
-
-      - name: Run when comvent matches
-        run: |
-          echo You see this step running only when comvent found the matching keyword in the comment event
-        # This checks whether comvent found a match
-        if: steps.comvent.outputs.comvent != ''
-        # Comvent returns the following values
-        #   if found -> "found"
-        #   if not   -> ""
+  # You can have as many regex setup as you need.
 ```
 
-As shown, you will need to be able to parse the JSON formatted `GITHUB_EVENT` which is located at `$GITHUB_EVENT_PATH`.
+### Handle Abusive Content
 
-The main objective of `comvent` is to remove any burdens in setting up the JSON formatting, regex search, etc., and simply allow you to write a query without too much of the implementation details abstracted away.
+You can add a simple automation to monitor abusive comments.
 
-## **WHY**: Quick and Cheap
+Using [github-script](https://github.com/actions/github-script), we can remove such comment, while leaving a comment about the deletion.
 
-GitHub Actions can be defined either in JavaScript or Docker container.
+> `.github/workflows/abuse-monitor.yaml`
 
-Docker container allows full segregation and secure setup, but it takes about ~10sec to build and start up.  
-When you wish to use GitHub Actions on frequently used events such as PR and Issue Comments, this can easily add up.
+```yaml
+- name: Handle with Comvent
+  id: comvent
+  with:
+    token: ${{ secrets.GITHUB_TOKEN }}
+    config-path: .github/comvent-abuse-monitor.yaml
 
-The solution `comvent` provides is a cheaper solution than Docker equivalent (written in only dozens of lines in TypeScript), and provides a building block for much more complex setup.
+# The below only runs when Comvent finds matching comment.
+# This assumes that Comvent config holding 'some-abusive-content' as a keyword.
+- if: steps.comvent.outputs.some-abusive-content != ''
+  name: Handle some abusive content
+  uses: actions/github-script@v3
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    # An example of removing the abusive comment, and leaving a comment about the deletion.
+    script: |
+      github.issues.deleteComment({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        comment_id: ${{ github.event.comment.id }}
+      })
+
+      const comment = `Found abusive comment! 😰
+      The comment was thus removed.`;
+
+      github.issues.createComment({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: comment
+      })
+```
+
+<details>
+<summary>Click to view full example</summary>
+
+> `.github/workflows/abuse-monitor.yaml`
+
+```yaml
+name: Monitor Abusive Comments
+on:
+  issue_comment:
+    # This shouldn't be called for comment deletion
+    types:
+      - created
+      - edited
+
+jobs:
+  abuse-monitor:
+    name: With latest code base
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Handle with Comvent
+        id: comvent
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-path: .github/comvent-abuse-monitor.yaml
+
+      # The below only runs when Comvent finds matching comment.
+      # This assumes that Comvent config holding 'some-abusive-content' as a keyword.
+      - if: steps.comvent.outputs.some-abusive-content != ''
+        name: Handle some abusive content
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # An example of removing the abusive comment, and leaving a comment about the deletion.
+          script: |
+            github.issues.deleteComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ github.event.comment.id }}
+            })
+
+            const comment = `Found abusive comment! 😰
+            The comment was thus removed.`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            })
+```
+
+</details>
+
+As used above, Comvent configuration needs to define the keywords to find patterns.
+
+> `.github/comvent-abuse-monitor.yaml`
+
+```yaml
+---
+version: 0.2.0
+
+trigger: default
+
+keywords:
+  - name: some-abusive-content
+    value: 'some abusive content' # Find abusive comment
+```
+
+## 🧪 Action Inputs
+
+| Name                | Description                                                                                                                    | IsRequired |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ | :--------: |
+| `token`             | `GITHUB_TOKEN` or Personal Access Token with `repo` scope                                                                      |    Yes     |
+| `config-path`       | Path to Comvent configuration file. You can find more about the configuration below. Defaults to `.github/comvent-setup.yaml`. |            |
+| `config-check-only` | A flag to run only Comvent configuration setup. Used for testing only.                                                         |            |
+
+## ⚙️ Comvent Configuration File
+
+Comvent uses a dedicated YAML file for its configuration.
+
+### Example
+
+The below is a copy of [`.github/comvent-setup.yaml`](https://github.com/rytswd/comvent/blob/main/.github/comvent-setup.yaml).
+
+```yaml
+---
+# version determines the supported values and how they are handled. The current
+# latest is 0.2.0, and if not speccified, it infers the latest version.
+version: 0.2.0
+
+# trigger can accept either `default` or `specific`.
+# - default:  all comments will be handled by Comvent, except for those from
+#             users listed under users.inactive list below.
+# - specific: only comments made by specified users under users.active list
+#             below gets handled by Comvent.
+trigger: default
+
+# users is consisted of `active` or `inactive` user list. Providing a list
+# which does not match the `trigger` setup above is simply ignored.
+users:
+  active:
+    - rytswd # This is no-op, as the `trigger` above is set to `default`
+  inactive:
+    - random-user
+    - another-user
+
+# keywords is a list comprised of `name` and `value` fields.
+# - name:  used for Comvent output, and thus should not include whitespace.
+# - value: regex value to search for. The search takes place for each line in
+#          the comment.
+keywords:
+  - name: command-random
+    value: '^\/random$' # Regex which looks for a comment with '/random'
+```
+
+You can find a few examples in [`.github/`](https://github.com/rytswd/comvent/tree/main/.github) directory.
+
+### Configuration Details
+
+| Key        | Description                                                                                                                                                                   | Default   |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `version`  | The version of configuration spec. The latest is `0.2.0`.                                                                                                                     | `0.2.0`   |
+| `trigger`  | When to handle Comvent. `default` means event triggered by anyone would be handled by Comvent, and `specific` means only specified users' comments would be handled.          | `default` |
+| `users`    | Stanza with `active` or `inactive` with list of GitHub user accounts. `active` list is only used for `specific` trigger setup, and `inactive` is for `default` trigger setup. |           |
+| `keywords` | Keywords to process comment based on. Each `value` is regex searched in comment, for each line.                                                                               |           |

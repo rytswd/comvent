@@ -1,36 +1,36 @@
-import { getInput, setOutput, setFailed } from "@actions/core";
-import { readFileSync } from "fs";
+import * as core from '@actions/core'
+import {fetchFileContent} from './step-0-prerequisites/fetch-config'
+import {prepare} from './step-1-config-prep/process-prep'
+import {checkComment} from './step-2-check-comment/process-check'
 
-async function run() {
+async function run(): Promise<void> {
   try {
-    const keyword = getInput("keyword");
-    const comment = await getComment();
+    core.debug(`cwd: ${process.cwd()}`)
 
-    const found = findMatch(comment, keyword);
-    console.log("comvent search complete, result: ", found);
-    setOutput("comvent", found ? "found" : "");
+    core.debug('Getting input from Action setup')
+    const token = core.getInput('token')
+    const configPath = core.getInput('config-path')
+    const configCheckOnly = core.getInput('config-check-only')
+
+    core.debug('Getting config file for further processing')
+    const f: string = await fetchFileContent(token, configPath)
+
+    core.debug('Parse config and prepare for comment event check')
+    const config = prepare(f)
+
+    // If only config check is to be done, return early
+    if (configCheckOnly !== '') {
+      core.debug('config-check-only flag found, skipping comment handling')
+      return
+    }
+
+    core.debug('Starting comment check by iterating comvent config')
+    checkComment(config)
+
+    core.debug('comvent complete')
   } catch (error) {
-    setFailed(error.message);
+    core.setFailed(error.message)
   }
 }
 
-function getComment(): string {
-  const path = process.env.GITHUB_EVENT_PATH;
-  if (!path) throw "GITHUB_EVENT_PATH not found";
-
-  const data = readFileSync(path);
-  const event = JSON.parse(data.toString());
-  const msg = event.comment.body;
-
-  if (!msg) throw "Comment body not found";
-
-  return msg;
-}
-
-function findMatch(comment: string, keyword: string): boolean {
-  let regexp = new RegExp(keyword);
-
-  return regexp.test(comment);
-}
-
-run();
+run()

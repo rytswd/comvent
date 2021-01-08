@@ -1,12 +1,18 @@
-name: "Comvent - Comment Event"
-description: "Comvent allows simple search on comment event, and control the job workflow"
-author: "rytswd"
-branding:
-  icon: zap
-  color: green
+name: Comvent - Comment Event
+description: Comment Event ⚡️ handler, which can be used as a building block of ChatBot like setup.
+author: rytswd
 inputs:
-  keyword:
-    description: "Keyword to search in the comment; this uses a regex"
+  token:
+    required: true
+    description: Your GitHub Token, often specified with GITHUB_TOKEN
+  config-path:
+    description: The path to keyword setup
+    required: false
+    default: .github/comvent-setup.yaml
+  config-check-only:
+    description: A flag to skip comment check so that you can check config validity only
+    required: false
+    default: ""
 runs:
-  using: "node12"
-  main: "lib/main.js"
+  using: node12
+  main: dist/index.js

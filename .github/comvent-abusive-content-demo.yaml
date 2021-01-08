@@ -1,0 +1,8 @@
+---
+version: 0.2.0
+
+trigger: default
+
+keywords:
+  - name: some-abusive-content
+    value: "some abusive content" # Find abusive comment
