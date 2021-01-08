@@ -242,11 +242,11 @@ keywords:
 
 ## 🧪 Action Inputs
 
-| Name                | Description                                                                                                                    | IsRequired |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ | :--------: |
-| `token`             | `GITHUB_TOKEN` or Personal Access Token with `repo` scope                                                                      |    Yes     |
-| `config-path`       | Path to Comvent configuration file. You can find more about the configuration below. Defaults to `.github/comvent-setup.yaml`. |            |
-| `config-check-only` | A flag to run only Comvent configuration setup. Used for testing only.                                                         |            |
+| Name                | Description                                                                                                                                                                                                                               | IsRequired |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------: |
+| `token`             | `GITHUB_TOKEN` or Personal Access Token with `repo` scope                                                                                                                                                                                 |    Yes     |
+| `config-path`       | Path to Comvent configuration file. You can find more about the configuration below. Defaults to `.github/comvent-setup.yaml`. Regardless of your GitHub Action setup, this assumes the current directory is the root of your repository. |            |
+| `config-check-only` | A flag to run only Comvent configuration setup. Used for testing only.                                                                                                                                                                    |            |
 
 ## ⚙️ Comvent Configuration File
 
