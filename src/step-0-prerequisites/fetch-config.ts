@@ -23,11 +23,12 @@ export async function fetchFileContent(
   })
 
   // Workaround to get the content type
-  if (Array.isArray(data)) throw new Error('error')
+  if (Array.isArray(data)) throw new Error('config data is malformed')
 
   const d = data as GetRepoContentResponseDataFile
 
-  if (typeof d.content === 'undefined') throw new Error('undefined received')
+  if (typeof d.content === 'undefined')
+    throw new Error('undefined content received for config')
 
   // Encoding needs to be hardcoded here, as d.encoding is represented as string,
   // but 'base64' is a part of union in the Buffer.from.
