@@ -238,6 +238,8 @@ function mapToComventSetup(data) {
                 break;
             // Handle 'keywords' stanza.
             case 'keywords':
+                // TODO: Add a check for special keyword that's not allowed
+                //       - comvent-found-any-match
                 if (Array.isArray(v)) {
                     for (const keyword of v) {
                         if (!util_1.hasProperty(keyword, 'name'))
@@ -479,12 +481,18 @@ function checkComment(config) {
     if (!check_user_1.isUserAllowed(comment, config))
         // If the comment was submitted by unlisted user, return early.
         return;
+    let foundAny = false;
     const foundKeywords = find_match_1.findMatches(comment, config);
-    // eslint-disable-next-line github/array-foreach
-    foundKeywords.forEach((found, name) => {
-        if (found)
-            core.setOutput(name, 'found');
-    });
+    for (const [name, found] of foundKeywords) {
+        if (!found)
+            break;
+        foundAny = true;
+        core.setOutput(name, 'found');
+    }
+    // If any match found, set another special flag 'comvent-found-any-match' to
+    // 'found', so that you can do some common prep work for all cases.
+    if (foundAny)
+        core.setOutput('comvent-found-any-match', 'found');
 }
 exports.checkComment = checkComment;
 
