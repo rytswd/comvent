@@ -15,8 +15,9 @@
 ## 🌅 Contents
 
 - [Examples](#-examples)
-- [Action inputs](#-action-inputs)
+- [Action Inputs](#-action-inputs)
 - [Comvent Configuration File](#%EF%B8%8F-comvent-configuration-file)
+- [Action Outputs](#-action-outputs)
 
 ## 🚀 Examples
 
@@ -301,3 +302,30 @@ You can find a few examples in [`.github/`](https://github.com/rytswd/comvent/tr
 | `trigger`  | When to handle Comvent. `default` means event triggered by anyone would be handled by Comvent, and `specific` means only specified users' comments would be handled.          | `default` |
 | `users`    | Stanza with `active` or `inactive` with list of GitHub user accounts. `active` list is only used for `specific` trigger setup, and `inactive` is for `default` trigger setup. |           |
 | `keywords` | Keywords to process comment based on. Each `value` is regex searched in comment, for each line.                                                                               |           |
+
+## 🍸 Action Outputs
+
+Comvent provides the outputs with which you can tweak your Action worrkflow.
+
+As the outputs will be based on the [Comvent Configuration File](#%EF%B8%8F-comvent-configuration-file) provided to Comvent, the below table is based on the following simple configuration as an example.
+
+> `.github/comvent-config.yaml`
+
+```yaml
+---
+version: 0.2.0
+
+trigger: default
+
+keywords:
+  - name: command-random
+    value: '^\/random$'
+  - name: some-other-command
+    value: 'some arbitrary regex setup'
+```
+
+| Name                           | Description                                                                                                     |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `comvent-found-any-match`      | Special keyword provided by Comvent by default. If any keyword is matched, this will provide `found` as output. |
+| (Example) `command-random`     | When the regex value matches with the comment line, this will output `found`.                                   |
+| (Example) `some-other-command` | When the regex value matches with the comment line, this will output `found`.                                   |
