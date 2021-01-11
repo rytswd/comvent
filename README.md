@@ -327,5 +327,5 @@ keywords:
 | Name                           | Description                                                                                                     |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
 | `comvent-found-any-match`      | Special keyword provided by Comvent by default. If any keyword is matched, this will provide `found` as output. |
-| (Example) `command-random`     | When the regex value matches with the comment line, this will output `found`.                                   |
-| (Example) `some-other-command` | When the regex value matches with the comment line, this will output `found`.                                   |
+| (Example)<br/>`command-random`     | When the regex value matches with the comment line, this will output `found`.                                   |
+| (Example)<br/>`some-other-command` | When the regex value matches with the comment line, this will output `found`.                                   |
