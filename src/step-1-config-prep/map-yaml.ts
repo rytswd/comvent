@@ -49,6 +49,9 @@ export function mapToComventSetup(data: Map<string, object>): comventSetup {
 
       // Handle 'keywords' stanza.
       case 'keywords':
+        // TODO: Add a check for special keyword that's not allowed
+        //       - comvent-found-any-match
+
         if (Array.isArray(v)) {
           for (const keyword of v) {
             if (!hasProperty(keyword, 'name')) break
