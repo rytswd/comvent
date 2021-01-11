@@ -485,7 +485,7 @@ function checkComment(config) {
     const foundKeywords = find_match_1.findMatches(comment, config);
     for (const [name, found] of foundKeywords) {
         if (!found)
-            break;
+            continue;
         foundAny = true;
         core.setOutput(name, 'found');
     }
