@@ -14,7 +14,7 @@ export function checkComment(config: comventSetup): void {
   const foundKeywords = findMatches(comment, config)
 
   for (const [name, found] of foundKeywords) {
-    if (!found) break
+    if (!found) continue
 
     foundAny = true
     core.setOutput(name, 'found')
