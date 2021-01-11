@@ -10,10 +10,17 @@ export function checkComment(config: comventSetup): void {
     // If the comment was submitted by unlisted user, return early.
     return
 
+  let foundAny = false
   const foundKeywords = findMatches(comment, config)
 
-  // eslint-disable-next-line github/array-foreach
-  foundKeywords.forEach((found: boolean, name: string) => {
-    if (found) core.setOutput(name, 'found')
-  })
+  for (const [name, found] of foundKeywords) {
+    if (!found) break
+
+    foundAny = true
+    core.setOutput(name, 'found')
+  }
+
+  // If any match found, set another special flag 'comvent-found-any-match' to
+  // 'found', so that you can do some common prep work for all cases.
+  if (foundAny) core.setOutput('comvent-found-any-match', 'found')
 }
