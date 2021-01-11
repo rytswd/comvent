@@ -32,6 +32,7 @@ You can add Comvent setup at the beginning of the `issue_comment` event, and use
 
 ```yaml
 - name: Handle with Comvent
+  uses: rytswd/comvent@v0.2
   id: comvent
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
@@ -81,6 +82,7 @@ jobs:
 
     steps:
       - name: Handle with Comvent
+        uses: rytswd/comvent@v0.2
         id: comvent
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -140,6 +142,7 @@ Using [github-script](https://github.com/actions/github-script), we can remove s
 
 ```yaml
 - name: Handle with Comvent
+  uses: rytswd/comvent@v0.2
   id: comvent
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
@@ -192,6 +195,7 @@ jobs:
 
     steps:
       - name: Handle with Comvent
+        uses: rytswd/comvent@v0.2
         id: comvent
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
