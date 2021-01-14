@@ -25,7 +25,7 @@ Comvent is being used in this repo as well. You can check out [this issue](https
 
 ### ChatBot Setup
 
-It is pretty easy to provide ChatBot experience in PR / Issue comment.
+It is pretty easy to provide simplistic ChatBot experience with PR / Issue comment.
 
 You can add Comvent setup at the beginning of the `issue_comment` event, and use its output to run any step afterwards based on the patterns found. The below is an example to simply repsond to a comment.
 
@@ -324,8 +324,8 @@ keywords:
     value: 'some arbitrary regex setup'
 ```
 
-| Name                           | Description                                                                                                     |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `comvent-found-any-match`      | Special keyword provided by Comvent by default. If any keyword is matched, this will provide `found` as output. |
+| Name                               | Description                                                                                                     |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `comvent-found-any-match`          | Special keyword provided by Comvent by default. If any keyword is matched, this will provide `found` as output. |
 | (Example)<br/>`command-random`     | When the regex value matches with the comment line, this will output `found`.                                   |
 | (Example)<br/>`some-other-command` | When the regex value matches with the comment line, this will output `found`.                                   |
