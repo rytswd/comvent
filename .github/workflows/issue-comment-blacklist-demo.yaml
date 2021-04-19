@@ -50,3 +50,18 @@ jobs:
               repo: context.repo.repo,
               body: comment
             })
+
+      - if: steps.comvent.outputs.command-echo != ''
+        name: Command echo triggered
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comment = `Command \`/echo\` was triggered by the comment. You echoed "${{ steps.comvent.outputs.command-echo }}".`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            })

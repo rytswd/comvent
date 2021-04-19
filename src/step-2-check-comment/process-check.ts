@@ -17,7 +17,7 @@ export function checkComment(config: comventSetup): void {
     if (!found) continue
 
     foundAny = true
-    core.setOutput(name, 'found')
+    core.setOutput(name, found)
   }
 
   // If any match found, set another special flag 'comvent-found-any-match' to

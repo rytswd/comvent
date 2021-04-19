@@ -10,7 +10,7 @@ import {comventComment, comventSetup} from '../util'
 export function findMatches(
   comment: comventComment,
   config: comventSetup
-): Map<string, boolean> {
+): Map<string, string | undefined> {
   const result = new Map()
 
   for (const [name, regexValue] of config.keywords) {
@@ -20,15 +20,32 @@ export function findMatches(
   return result
 }
 
-function findMatch(comment: string, keyword: string): boolean {
-  const regexp = new RegExp(keyword)
+function findMatch(comment: string, keyword: string): string | undefined {
+  const regexp = new RegExp(keyword, 'g')
 
   const lines = comment.split(/\r?\n/)
-  let result = false
 
   for (const line of lines) {
-    if (regexp.test(line)) result = true
+    const [result] = line.matchAll(regexp)
+    // No match found.
+    if (!result) {
+      continue
+    }
+
+    // Found a match, and no regexp group defined.
+    if (result.length === 1 && result.input) {
+      return result.input
+    }
+
+    // Found a match, and there is a regexp group.
+    // Take the first match and return, as long as it's valid.
+    if (result[1]) {
+      return result[1]
+    }
+
+    // If the first group is an empty string, return the full match
+    return result.input
   }
 
-  return result
+  return undefined
 }
