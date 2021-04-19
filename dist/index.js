@@ -1,5 +1,4 @@
-require('./sourcemap-register.js');module.exports =
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 3109:
@@ -289,7 +288,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parseYAML = void 0;
-const console_1 = __nccwpck_require__(7082);
 const yaml = __importStar(__nccwpck_require__(1917));
 /**
  *
@@ -306,7 +304,7 @@ function parseYAML(fileContent) {
             break;
         // either content is pure string or empty
         default:
-            throw console_1.exception(`Unexpected data proovided: ${doc}`);
+            throw new Error(`Unexpected data proovided: ${doc}`);
     }
     return data;
 }
@@ -405,14 +403,27 @@ function findMatches(comment, config) {
 }
 exports.findMatches = findMatches;
 function findMatch(comment, keyword) {
-    const regexp = new RegExp(keyword);
+    const regexp = new RegExp(keyword, 'g');
     const lines = comment.split(/\r?\n/);
-    let result = false;
     for (const line of lines) {
-        if (regexp.test(line))
-            result = true;
+        const [result] = line.matchAll(regexp);
+        // No match found.
+        if (!result) {
+            continue;
+        }
+        // Found a match, and no regexp group defined.
+        if (result.length === 1 && result.input) {
+            return result.input;
+        }
+        // Found a match, and there is a regexp group.
+        // Take the first match and return, as long as it's valid.
+        if (result[1]) {
+            return result[1];
+        }
+        // If the first group is an empty string, return the full match
+        return result.input;
     }
-    return result;
+    return undefined;
 }
 
 
@@ -487,7 +498,7 @@ function checkComment(config) {
         if (!found)
             continue;
         foundAny = true;
-        core.setOutput(name, 'found');
+        core.setOutput(name, found);
     }
     // If any match found, set another special flag 'comvent-found-any-match' to
     // 'found', so that you can do some common prep work for all cases.
@@ -724,6 +735,7 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
@@ -4319,6 +4331,23 @@ module.exports.loadAll             = loader.loadAll;
 module.exports.dump                = dumper.dump;
 module.exports.YAMLException = __nccwpck_require__(8179);
 
+// Re-export all types in case user wants to create custom schema
+module.exports.types = {
+  binary:    __nccwpck_require__(7900),
+  float:     __nccwpck_require__(2705),
+  map:       __nccwpck_require__(6150),
+  null:      __nccwpck_require__(721),
+  pairs:     __nccwpck_require__(6860),
+  set:       __nccwpck_require__(9548),
+  timestamp: __nccwpck_require__(9212),
+  bool:      __nccwpck_require__(4993),
+  int:       __nccwpck_require__(1615),
+  merge:     __nccwpck_require__(6104),
+  omap:      __nccwpck_require__(9046),
+  seq:       __nccwpck_require__(7283),
+  str:       __nccwpck_require__(3619)
+};
+
 // Removed functions from JS-YAML 3.0.x
 module.exports.safeLoad            = renamed('safeLoad', 'load');
 module.exports.safeLoadAll         = renamed('safeLoadAll', 'loadAll');
@@ -7177,25 +7206,25 @@ var YAMLException = __nccwpck_require__(8179);
 var Type          = __nccwpck_require__(6073);
 
 
-function compileList(schema, name, result) {
-  var exclude = [];
+function compileList(schema, name) {
+  var result = [];
 
   schema[name].forEach(function (currentType) {
+    var newIndex = result.length;
+
     result.forEach(function (previousType, previousIndex) {
       if (previousType.tag === currentType.tag &&
           previousType.kind === currentType.kind &&
           previousType.multi === currentType.multi) {
 
-        exclude.push(previousIndex);
+        newIndex = previousIndex;
       }
     });
 
-    result.push(currentType);
+    result[newIndex] = currentType;
   });
 
-  return result.filter(function (type, index) {
-    return exclude.indexOf(index) === -1;
-  });
+  return result;
 }
 
 
@@ -7281,8 +7310,8 @@ Schema.prototype.extend = function extend(definition) {
   result.implicit = (this.implicit || []).concat(implicit);
   result.explicit = (this.explicit || []).concat(explicit);
 
-  result.compiledImplicit = compileList(result, 'implicit', []);
-  result.compiledExplicit = compileList(result, 'explicit', []);
+  result.compiledImplicit = compileList(result, 'implicit');
+  result.compiledExplicit = compileList(result, 'explicit');
   result.compiledTypeMap  = compileMap(result.compiledImplicit, result.compiledExplicit);
 
   return result;
@@ -7555,6 +7584,7 @@ function Type(tag, options) {
   });
 
   // TODO: Add tag format check.
+  this.options       = options; // keep original options in case user wants to extend this type later
   this.tag           = tag;
   this.kind          = options['kind']          || null;
   this.resolve       = options['resolve']       || function () { return true; };
@@ -10447,14 +10477,6 @@ module.exports = require("assert");;
 
 /***/ }),
 
-/***/ 7082:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("console");;
-
-/***/ }),
-
 /***/ 8614:
 /***/ ((module) => {
 
@@ -10559,8 +10581,9 @@ module.exports = require("zlib");;
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -10585,11 +10608,14 @@ module.exports = require("zlib");;
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	__nccwpck_require__.ab = __dirname + "/";/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
+/******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __nccwpck_require__(3109);
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(3109);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map
