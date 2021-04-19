@@ -12,3 +12,5 @@ keywords:
     value: '^\/weather$' # Regex which looks for a comment with '/weather'
   - name: command-hello-world
     value: '^\/hello-world$' # Regex which looks for a comment with '/hello-world'
+  - name: command-echo
+    value: "^/echo (.+)$"
