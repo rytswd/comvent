@@ -1,4 +1,3 @@
-import {exception} from 'console'
 import * as yaml from 'js-yaml'
 
 /**
@@ -18,7 +17,7 @@ export function parseYAML(fileContent: string): Map<string, object> {
       break
     // either content is pure string or empty
     default:
-      throw exception(`Unexpected data proovided: ${doc}`)
+      throw new Error(`Unexpected data proovided: ${doc}`)
   }
   return data
 }
