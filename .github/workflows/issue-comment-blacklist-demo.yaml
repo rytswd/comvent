@@ -59,8 +59,7 @@ jobs:
     needs: comvent-simple
     if: always() && needs.comvent-simple.outputs.command-echo
     steps:
-      - if: steps.comvent.outputs.command-echo != ''
-        name: Command echo triggered
+      - name: Command echo triggered
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
