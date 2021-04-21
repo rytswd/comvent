@@ -137,7 +137,7 @@ keywords:
 
 You can add a simple automation to monitor abusive comments.
 
-Using [github-script](https://github.com/actions/github-script), we can remove such comment, while leaving a comment about the deletion.
+Using [github-script](https://github.com/actions/github-script), you can automatically remove such comment when Comvent finds one, while leaving a comment about the deletion.
 
 > `.github/workflows/abuse-monitor.yaml`
 
@@ -259,7 +259,7 @@ Comvent uses a dedicated YAML file for its configuration.
 
 ### Example
 
-The below is a copy of [`.github/comvent-setup.yaml`](https://github.com/rytswd/comvent/blob/main/.github/comvent-setup.yaml).
+The below is the copy of [`.github/comvent-setup.yaml`](https://github.com/rytswd/comvent/blob/main/.github/comvent-setup.yaml).
 
 ```yaml
 ---
@@ -298,7 +298,7 @@ You can find a few examples in [`.github/`](https://github.com/rytswd/comvent/tr
 
 | Key        | Description                                                                                                                                                                   | Default   |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `version`  | The version of configuration spec. The latest is `0.2.0`.                                                                                                                     | `0.2.0`   |
+| `version`  | The version of configuration spec. The latest is `0.2.0`. This may not be in line with the released version as of now, until Comvent releases v1.0                            | `0.2.0`   |
 | `trigger`  | When to handle Comvent. `default` means event triggered by anyone would be handled by Comvent, and `specific` means only specified users' comments would be handled.          | `default` |
 | `users`    | Stanza with `active` or `inactive` with list of GitHub user accounts. `active` list is only used for `specific` trigger setup, and `inactive` is for `default` trigger setup. |           |
 | `keywords` | Keywords to process comment based on. Each `value` is regex searched in comment, for each line.                                                                               |           |
@@ -322,10 +322,13 @@ keywords:
     value: '^\/random$'
   - name: some-other-command
     value: 'some arbitrary regex setup'
+  - name: command-echo
+    value: '^\/echo (.+)$'
 ```
 
-| Name                               | Description                                                                                                     |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `comvent-found-any-match`          | Special keyword provided by Comvent by default. If any keyword is matched, this will provide `found` as output. |
-| (Example)<br/>`command-random`     | When the regex value matches with the comment line, this will output `found`.                                   |
-| (Example)<br/>`some-other-command` | When the regex value matches with the comment line, this will output `found`.                                   |
+| Name                               | Description                                                                                                                                                                                                                                                                                                   |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `comvent-found-any-match`          | Special keyword provided by Comvent by default. If any keyword is matched, this will provide `found` as output.                                                                                                                                                                                               |
+| (Example)<br/>`command-random`     | When the RegExp condition is matched, the entire line will be returned as the output. With the above example, this will be `/random`.                                                                                                                                                                         |
+| (Example)<br/>`some-other-command` | When the RegExp condition is matched, the entire line will be returned as the output. With the above example, this will be something like `Test test - some arbitrary regex setup - test test`.                                                                                                               |
+| (Example)<br/>`command-echo`       | When the RegExp condition containing group is matched, the first group match will be returned, and if the first group is an empty string, it would be the entire line. For example, with the above example, if the comment was `/echo this is a test message.`, the output will be `this is a test message.`. |
