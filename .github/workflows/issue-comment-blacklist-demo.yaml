@@ -10,6 +10,8 @@ jobs:
   comvent-simple:
     name: With latest code base
     runs-on: ubuntu-latest
+    outputs:
+      command-echo: ${{ steps.comvent.outputs.command-echo }}
 
     steps:
       - uses: actions/checkout@v2
@@ -51,6 +53,12 @@ jobs:
               body: comment
             })
 
+  echo:
+    name: Echo
+    runs-on: ubuntu-latest
+    needs: comvent-simple
+    if: always() && needs.comvent-simple.outputs.command-echo
+    steps:
       - if: steps.comvent.outputs.command-echo != ''
         name: Command echo triggered
         uses: actions/github-script@v3
