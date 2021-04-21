@@ -64,7 +64,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const comment = `Command \`/echo\` was triggered by the comment. You echoed "${{ steps.comvent.outputs.command-echo }}".`;
+            const comment = `Command \`/echo\` was triggered by the comment. You echoed "${{ needs.comvent-simple.outputs.command-echo }}".`;
 
             github.issues.createComment({
               issue_number: context.issue.number,
