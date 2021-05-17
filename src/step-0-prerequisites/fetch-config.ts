@@ -15,7 +15,7 @@ export async function fetchFileContent(
 ): Promise<string> {
   const octokit = github.getOctokit(token)
 
-  const {data} = await octokit.repos.getContent({
+  const {data} = await octokit.rest.repos.getContent({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     path: filePath,
