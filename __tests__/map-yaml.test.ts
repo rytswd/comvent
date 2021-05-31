@@ -15,7 +15,7 @@ describe('map-yaml', () => {
   })
   test('valid YAML with just version', () => {
     const input: Map<string, object> = new Map([
-      ['version', ('0.2.0' as unknown) as object]
+      ['version', '0.2.0' as unknown as object]
     ])
     const result = mapToComventSetup(input)
     expect(result).toMatchObject({
@@ -27,7 +27,7 @@ describe('map-yaml', () => {
   })
   test('invalid version', () => {
     const input: Map<string, object> = new Map([
-      ['version', ('0.1.0' as unknown) as object]
+      ['version', '0.1.0' as unknown as object]
     ])
     expect(() => mapToComventSetup(input)).toThrow(
       "unexpected version '0.1.0' provided"
