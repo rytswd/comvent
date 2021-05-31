@@ -19,6 +19,7 @@ jobs:
       - name: Ensure Git state is clean
         run: |
           git status --short
+          git diff
           git diff-index --quiet HEAD
 
   test: # make sure the action works on a clean machine without building
