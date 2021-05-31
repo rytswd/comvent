@@ -15,6 +15,12 @@ jobs:
           npm install
       - run: |
           npm run all
+
+      - name: Ensure Git state is clean
+        run: |
+          git status --short
+          git diff-index --quiet HEAD
+
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
