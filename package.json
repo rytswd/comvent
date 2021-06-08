@@ -25,14 +25,14 @@
   "author": "rytswd",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.3.0",
+    "@actions/core": "^1.4.0",
     "@actions/github": "^5.0.0",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
     "@types/js-yaml": "^4.0.1",
-    "@types/node": "^15.12.0",
+    "@types/node": "^15.12.2",
     "@typescript-eslint/parser": "^4.26.0",
     "@vercel/ncc": "^0.28.6",
     "eslint": "^7.27.0",
