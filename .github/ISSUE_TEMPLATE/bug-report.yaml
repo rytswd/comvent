@@ -1,0 +1,46 @@
+---
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: [bug, triage]
+# assignees:
+#   - rytswd
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+
+        Please provide the below details for quicker investigation and fix.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: Which version of Comvent do you get the bug with?
+      options:
+        - 0.4
+        - 0.3
+        - main branch
+        - Other (please specify below)
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Did you see some error? Or was something not working as expected? Please provide as much information as possible. For logs, there is a separate field below.
+      placeholder: Error details, detailed steps to reproduce, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: input
+    id: reference
+    attributes:
+      label: Reference
+      description: If you have any reference for action, please provide one here
+      placeholder: ex. https://github.com/rytswd/comvent/issues/24
