@@ -18,6 +18,8 @@ body:
       multiple: true
       options:
         - GitHub Action Input
+        - Issue Comment Event Handling
+        - Pull Request Comment Event Handling
         - Comvent Configuration YAML
         - Runtime
         - Other
