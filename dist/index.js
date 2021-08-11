@@ -436,8 +436,8 @@ function findMatch(comment, keyword) {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getComment = void 0;
-const fs_1 = __nccwpck_require__(5747);
 const util_1 = __nccwpck_require__(4024);
+const fs_1 = __nccwpck_require__(5747);
 function getComment() {
     const path = process.env.GITHUB_EVENT_PATH;
     if (!path)
@@ -484,8 +484,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.checkComment = void 0;
 const core = __importStar(__nccwpck_require__(2186));
-const get_comment_1 = __nccwpck_require__(8547);
 const find_match_1 = __nccwpck_require__(5501);
+const get_comment_1 = __nccwpck_require__(8547);
 const check_user_1 = __nccwpck_require__(1293);
 function checkComment(config) {
     const comment = get_comment_1.getComment();
