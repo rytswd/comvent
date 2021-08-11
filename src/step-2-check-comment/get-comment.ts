@@ -1,5 +1,5 @@
-import {readFileSync} from 'fs'
 import {comventComment, hasProperty} from '../util'
+import {readFileSync} from 'fs'
 
 export function getComment(): comventComment {
   const path = process.env.GITHUB_EVENT_PATH
