@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
+import {comventSetup} from '../util'
 import {mapToComventSetup} from './map-yaml'
 import {parseYAML} from './parse-yaml'
-import {comventSetup} from '../util'
 
 export function prepare(fileContent: string): comventSetup {
   const data = parseYAML(fileContent)

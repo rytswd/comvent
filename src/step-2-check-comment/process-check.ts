@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import {comventSetup} from '../util'
-import {getComment} from './get-comment'
 import {findMatches} from './find-match'
+import {getComment} from './get-comment'
 import {isUserAllowed} from './check-user'
 
 export function checkComment(config: comventSetup): void {
