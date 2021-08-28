@@ -35,6 +35,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+/* eslint-disable i18n-text/no-en */
+/* eslint-disable sort-imports */
 const core = __importStar(__nccwpck_require__(2186));
 const process_fetch_1 = __nccwpck_require__(3347);
 const process_prep_1 = __nccwpck_require__(5488);
@@ -47,20 +49,23 @@ function run() {
             const configPath = core.getInput('config-path');
             const configCheckOnly = core.getInput('config-check-only');
             core.debug('Getting config file for further processing');
-            const f = yield process_fetch_1.fetch(token, configPath);
+            const f = yield (0, process_fetch_1.fetch)(token, configPath);
             core.debug('Parse config and prepare for comment event check');
-            const config = process_prep_1.prepare(f);
+            const config = (0, process_prep_1.prepare)(f);
             // If only config check is to be done, return early
             if (configCheckOnly !== '') {
                 core.debug('config-check-only flag found, skipping comment handling');
                 return;
             }
             core.debug('Starting comment check by iterating comvent config');
-            process_check_1.checkComment(config);
+            (0, process_check_1.checkComment)(config);
             core.debug('comvent complete');
         }
         catch (error) {
-            core.setFailed(error.message);
+            if (error instanceof Error)
+                core.setFailed(error.message);
+            else
+                core.setFailed('unknown error occurred');
         }
     });
 }
@@ -156,7 +161,7 @@ function fetch(token, filePath) {
     return __awaiter(this, void 0, void 0, function* () {
         let result;
         try {
-            result = yield fetch_config_1.fetchFileContent(token, filePath);
+            result = yield (0, fetch_config_1.fetchFileContent)(token, filePath);
         }
         catch (ex) {
             throw new Error(`failed to load config: ${ex}`);
@@ -227,10 +232,10 @@ function mapToComventSetup(data) {
             case 'users':
                 if (typeof v === 'object' && v !== null) {
                     const users = v;
-                    if (util_1.hasProperty(users, 'active') && util_1.isArrayOfStrings(users.active))
+                    if ((0, util_1.hasProperty)(users, 'active') && (0, util_1.isArrayOfStrings)(users.active))
                         result.usersWhitelisted = users.active;
-                    if (util_1.hasProperty(users, 'inactive') &&
-                        util_1.isArrayOfStrings(users.inactive))
+                    if ((0, util_1.hasProperty)(users, 'inactive') &&
+                        (0, util_1.isArrayOfStrings)(users.inactive))
                         result.usersBlacklisted = users.inactive;
                 }
                 core.debug(typeof v);
@@ -241,9 +246,9 @@ function mapToComventSetup(data) {
                 //       - comvent-found-any-match
                 if (Array.isArray(v)) {
                     for (const keyword of v) {
-                        if (!util_1.hasProperty(keyword, 'name'))
+                        if (!(0, util_1.hasProperty)(keyword, 'name'))
                             break;
-                        if (!util_1.hasProperty(keyword, 'value'))
+                        if (!(0, util_1.hasProperty)(keyword, 'value'))
                             break;
                         const name = keyword.name;
                         const regex = keyword.value;
@@ -343,8 +348,8 @@ const core = __importStar(__nccwpck_require__(2186));
 const map_yaml_1 = __nccwpck_require__(7071);
 const parse_yaml_1 = __nccwpck_require__(7994);
 function prepare(fileContent) {
-    const data = parse_yaml_1.parseYAML(fileContent);
-    const setup = map_yaml_1.mapToComventSetup(data);
+    const data = (0, parse_yaml_1.parseYAML)(fileContent);
+    const setup = (0, map_yaml_1.mapToComventSetup)(data);
     core.debug(`setup retrieved, 
       whitelist: ${setup.usersWhitelisted}
       blacklist: ${setup.usersBlacklisted}
@@ -442,9 +447,9 @@ function getComment() {
     const path = process.env.GITHUB_EVENT_PATH;
     if (!path)
         throw new Error('GITHUB_EVENT_PATH not found');
-    const data = fs_1.readFileSync(path);
+    const data = (0, fs_1.readFileSync)(path);
     const event = JSON.parse(data.toString());
-    if (!util_1.hasProperty(event.comment, 'body'))
+    if (!(0, util_1.hasProperty)(event.comment, 'body'))
         throw new Error('Comment body not found');
     const msg = {
         commentBody: event.comment.body,
@@ -488,12 +493,12 @@ const find_match_1 = __nccwpck_require__(5501);
 const get_comment_1 = __nccwpck_require__(8547);
 const check_user_1 = __nccwpck_require__(1293);
 function checkComment(config) {
-    const comment = get_comment_1.getComment();
-    if (!check_user_1.isUserAllowed(comment, config))
+    const comment = (0, get_comment_1.getComment)();
+    if (!(0, check_user_1.isUserAllowed)(comment, config))
         // If the comment was submitted by unlisted user, return early.
         return;
     let foundAny = false;
-    const foundKeywords = find_match_1.findMatches(comment, config);
+    const foundKeywords = (0, find_match_1.findMatches)(comment, config);
     for (const [name, found] of foundKeywords) {
         if (!found)
             continue;

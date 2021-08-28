@@ -1,3 +1,5 @@
+/* eslint-disable i18n-text/no-en */
+/* eslint-disable sort-imports */
 import * as core from '@actions/core'
 import {fetch} from './step-0-prerequisites/process-fetch'
 import {prepare} from './step-1-config-prep/process-prep'
@@ -27,7 +29,8 @@ async function run(): Promise<void> {
 
     core.debug('comvent complete')
   } catch (error) {
-    core.setFailed(error.message)
+    if (error instanceof Error) core.setFailed(error.message)
+    else core.setFailed('unknown error occurred')
   }
 }
 
