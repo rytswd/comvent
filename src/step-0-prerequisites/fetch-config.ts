@@ -1,8 +1,4 @@
 import * as github from '@actions/github'
-import {components} from '@octokit/openapi-types'
-
-// Workaround suggested in https://github.com/octokit/rest.js/issues/1971#issuecomment-747129857
-type GetRepoContentResponseDataFile = components['schemas']['content-file']
 
 /**
  * fetchFileContent fetches the file content and returns string representation
@@ -25,7 +21,12 @@ export async function fetchFileContent(
   // Workaround to get the content type
   if (Array.isArray(data)) throw new Error('config data is malformed')
 
-  const d = data as GetRepoContentResponseDataFile
+  // Workaround to get the content.
+  // The original type should be provided at
+  //   node_modules/@octokit/openapi-types/dist-types/generated/types.d.ts
+  // But this started to break after linter upgrade.
+  type t = {content: string}
+  const d = data as t
 
   if (typeof d.content === 'undefined')
     throw new Error('undefined content received for config')
