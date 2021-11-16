@@ -21,6 +21,7 @@ jobs:
         run: |
           git checkout package-lock.json --force
           git status --short
+          git diff HEAD
           git diff-index --quiet HEAD
 
   test: # make sure the action works on a clean machine without building
