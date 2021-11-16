@@ -1,6 +1,6 @@
 {
   "name": "comvent",
-  "version": "0.2.0",
+  "version": "0.4.4",
   "private": true,
   "description": "Comvent - Comment Event ⚡️ handler, which can be used as a building block of ChatBot like setup.",
   "main": "lib/main.js",
