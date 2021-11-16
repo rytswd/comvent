@@ -16,13 +16,13 @@ jobs:
       - run: |
           npm run all
 
-#      - name: Ensure Git state is clean
-#        # package-lock.json is purposely ignored as it gets a lot of diff in CI env
-#        run: |
-#          git checkout package-lock.json --force
-#          git status --short
-#          git diff HEAD
-#          git diff-index --quiet HEAD
+      - name: Ensure Git state is clean
+        # package-lock.json is purposely ignored as it gets a lot of diff in CI env
+        run: |
+          git checkout package-lock.json --force
+          git status --short
+          git diff HEAD
+          git diff-index --quiet HEAD
 
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
