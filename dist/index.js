@@ -50,7 +50,7 @@ function run() {
             const configCheckOnly = core.getInput('config-check-only');
             core.debug('Getting config file for further processing');
             const f = yield (0, process_fetch_1.fetch)(token, configPath);
-            core.debug('Parse config and prepare for comment event check');
+            core.debug('Parsing config and prepare for comment event check');
             const config = (0, process_prep_1.prepare)(f);
             // If only config check is to be done, return early
             if (configCheckOnly !== '') {

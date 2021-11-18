@@ -10,19 +10,25 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
+      - run: git config --global core.autocrlf false
       - uses: actions/checkout@v2
       - run: |
           npm install
       - run: |
           npm run all
 
-      # - name: Ensure Git state is clean
-      #   # package-lock.json is purposely ignored as it gets a lot of diff in CI env
-      #   run: |
-      #     git checkout package-lock.json --force
-      #     git status --short
-      #     git diff HEAD
-      #     git diff-index --quiet HEAD
+      - name: Ensure Git state is clean
+        # package-lock.json is purposely ignored as it gets a lot of diff in CI env
+        run: |
+          git checkout package-lock.json --force
+
+          # Handle line ending mismatch
+          git rm --cached -r .
+          git reset --hard
+
+          git status --short
+          git diff HEAD
+          git diff-index --quiet HEAD
 
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest

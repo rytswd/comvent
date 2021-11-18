@@ -15,7 +15,7 @@ async function run(): Promise<void> {
     core.debug('Getting config file for further processing')
     const f: string = await fetch(token, configPath)
 
-    core.debug('Parse config and prepare for comment event check')
+    core.debug('Parsing config and prepare for comment event check')
     const config = prepare(f)
 
     // If only config check is to be done, return early
