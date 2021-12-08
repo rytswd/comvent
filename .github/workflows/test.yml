@@ -22,10 +22,6 @@ jobs:
         run: |
           git checkout package-lock.json --force
 
-          # Handle line ending mismatch
-          git rm --cached -r .
-          git reset --hard
-
           git status --short
           git diff HEAD
           git diff-index --quiet HEAD
