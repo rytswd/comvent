@@ -22,6 +22,7 @@ jobs:
         run: |
           git checkout package-lock.json --force
 
+          git add . # Add to staging area so that line ending diff will be handled.
           git status --short
           git diff HEAD
           git diff-index --quiet HEAD
